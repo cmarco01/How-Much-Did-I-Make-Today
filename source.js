@@ -1,9 +1,24 @@
 
-function main() {
-    var date = getDate();
-    // console.log(date);
-    var income = prompt("\nWhat's goood, me! How much did you make today?")
 
+
+function main() {
+    const readline = require("readline");
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    var date = getDate()
+    var amount = 0;
+    var reason = "";
+
+    rl.question(`What's gooood, me! How much did you make today? (Today's Date: ${date}) >>`, getAmount => {
+        console.log(`You made ${getAmount}!`);
+        amount = getAmount;
+        rl.close();
+    });
+
+    console.log(amount);
 }
 
 function getDate() {
@@ -22,5 +37,11 @@ function getDate() {
 
     return newDate;
 }
+
+
+function logData(date, amount, where) {
+
+}
+
 
 main();
