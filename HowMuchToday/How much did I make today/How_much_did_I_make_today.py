@@ -1,3 +1,4 @@
+from _typeshed import IndexableBuffer
 from datetime import date
 from re import I
 from wsgiref import validate
@@ -32,10 +33,12 @@ def init():
 
 def updateIndex(date, amount, where):
     
+    if where == "":
+        where = "n/a"
+
     if date in index:
         index[date]["amount"] += ", " + amount
-        if where != "":
-            index[date]["where"] += ", " + where
+        index[date]["where"] += ", " + where
         index[date]["num_entries"] += 1
         
         print(index[date]["amount"])
@@ -47,7 +50,11 @@ def updateIndex(date, amount, where):
     init()
         
 
-    
+def writeToFile(date, amount, where):
+    total = 0
+    f = open("income_log.txt", "a")
+    f.write(date + " | $" + amount + " (" + where + ") | TOTAL: $" + str(total) + "\n")
+    f.close()
     
 
 init()
