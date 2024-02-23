@@ -96,19 +96,20 @@ def updateIndex(date, amount, where):
     
         
 def runAgain():
-    print("\n\nDo you want to make another entry? (ENTER=yes, ESC=exit)")
+    print("\n\nDo you want to make another entry? (Y=yes, ESC=exit)")
     hasAnswered = False
     while hasAnswered == False:
-        if keyboard.read_key() == 'enter':
-            print("\n\n\t***Running again...")
-            hasAnswered = True
+        if keyboard.is_pressed('y'):
+            print("\n\n\t***Running again...\n")
             init()
+            hasAnswered = True
             break
         elif keyboard.is_pressed('esc'):
             print("\n\n\t***Exiting...Later, scruuuub!!\n")
             hasAnswered = True
             exit()
             break
+    
 
 
 def writeToFile(date, amount, where):
