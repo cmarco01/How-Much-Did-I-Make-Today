@@ -6,6 +6,7 @@ from re import I
 from wsgiref import validate
 import os
 import json
+import keyboard
 
 try:
     with open('data.json', 'r') as openfile:
@@ -89,7 +90,9 @@ def updateIndex(date, amount, where):
     
     writeToFile(index[date]["date"], index[date]["amount"], index[date]["where"])
 
+    
     init()
+    
         
 
 def writeToFile(date, amount, where):
