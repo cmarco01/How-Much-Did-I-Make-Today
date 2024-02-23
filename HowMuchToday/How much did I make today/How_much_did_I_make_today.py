@@ -1,6 +1,8 @@
 from datetime import date
+from re import I
 from wsgiref import validate
 
+index = {}
 
 def init():
     today = date.today()
@@ -22,20 +24,30 @@ def init():
             break
     
         
-    where = input("\n(OPTIONAL) From where? >> ")
+    where = input("\n(OPTIONAL) From what? >> ")
     
-    testDict = {
-        getDate: {
-            "amount" : amount,
-            "where": where
-        }
-    }
-    
-    print(testDict)
+    updateIndex(getDate, str(amount), where)
 
-    testDict.update({"amount":amount * 10, "where": "detroit"})
+
+
+def updateIndex(date, amount, where):
     
-    print(testDict)
+    if date in index:
+        index[date]["amount"] += ", " + amount
+        if where != "":
+            index[date]["where"] += ", " + where
+        index[date]["num_entries"] += 1
         
+        print(index[date]["amount"])
+        print(index[date]["where"])
+        print(index[date]["num_entries"])
+    else:
+        index.update({date : {"amount":amount, "where":where, "num_entries":1}})
+
+    init()
+        
+
+    
+    
 
 init()
