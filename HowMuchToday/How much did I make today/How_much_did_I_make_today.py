@@ -1,8 +1,10 @@
 
 from datetime import date
+from math import e
 from os import write
 from re import I
 from wsgiref import validate
+import os
 
 index = {}
 
@@ -55,10 +57,53 @@ def updateIndex(date, amount, where):
 
 def writeToFile(date, amount, where):
     total = getTotal(amount)
-    f = open("income_log.txt", "a")
-    f.write(date + " | $" + amount + " (" + where + ") | TOTAL: $" + str(total) + "\n")
-    f.close()
+    f = open("income_log.txt", "r")    
+
+    if ", " in amount:
+        
+        temp = open("temp.txt", "a")
+        for i in f:
+            if date not in i:
+                temp.write(i)
+        
+        f.close()
+        newLine = getNewStr(date, amount, where) + str(total) + "\n"
+        print(newLine)
+        temp.write(newLine)
+        temp.close()
+        
+        temp = open("temp.txt", "r")
+        f = open("income_log.txt", "w")    
+        # print(temp.read())
+        f.write(temp.read())
+        temp.close()
+        os.remove("temp.txt")
+        f.close()
+    else:
+        f.close()
+        f = open("income_log.txt", "a")
+        f.write(date + " | $" + amount + " (" + where + ") | TOTAL: $" + str(total) + "\n")
+        f.close()
+   
+
+
+def getNewStr(date, amount, where):
+    amounts = amount.split(", ")
+    wheres = where.split(", ")
+    newString = ""
+    k = 0
+    for i in amounts:
+        #print(k)
+        if k == len(amounts) - 1:
+            newString += "$" + amounts[k] + " (" + wheres[k] + ") | TOTAL: $"
+        else: 
+            #print(amounts[k] + ", " + wheres[k])
+            newString += "$" + amounts[k] + " (" + wheres[k] + ") + "
+        k += 1
     
+    finalString = date + " | " + newString
+    return finalString
+
 
 def getTotal(amount):
     total = 0
@@ -70,7 +115,7 @@ def getTotal(amount):
     else:
         total = int(amount)
         
-    print(str(total))
+    # print(str(total))
     return total
 
 init()
