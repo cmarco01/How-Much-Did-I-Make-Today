@@ -1,5 +1,6 @@
-from _typeshed import IndexableBuffer
+
 from datetime import date
+from os import write
 from re import I
 from wsgiref import validate
 
@@ -45,16 +46,31 @@ def updateIndex(date, amount, where):
         print(index[date]["where"])
         print(index[date]["num_entries"])
     else:
-        index.update({date : {"amount":amount, "where":where, "num_entries":1}})
+        index.update({date : {"date":date, "amount":amount, "where":where, "num_entries":1}})
+
+    writeToFile(index[date]["date"], index[date]["amount"], index[date]["where"])
 
     init()
         
 
 def writeToFile(date, amount, where):
-    total = 0
+    total = getTotal(amount)
     f = open("income_log.txt", "a")
     f.write(date + " | $" + amount + " (" + where + ") | TOTAL: $" + str(total) + "\n")
     f.close()
     
+
+def getTotal(amount):
+    total = 0
+    if ", " in amount:
+        # print("multiple amts")
+        amounts = amount.split(", ")
+        for i in amounts:
+            total += int(i)
+    else:
+        total = int(amount)
+        
+    print(str(total))
+    return total
 
 init()
