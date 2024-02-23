@@ -16,9 +16,26 @@ def init():
             print("\nThat's not a number, fool! Try again.")
             continue
         else:
-            print("We gooood")
+            amount = round(amount)
+            print("\nWe gooood, rounding to nearest dollar: $" + str(amount))
             validAmount = True
             break
+    
+        
+    where = input("\n(OPTIONAL) From where? >> ")
+    
+    testDict = {
+        getDate: {
+            "amount" : amount,
+            "where": where
+        }
+    }
+    
+    print(testDict)
+
+    testDict.update({"amount":amount * 10, "where": "detroit"})
+    
+    print(testDict)
         
 
 init()
