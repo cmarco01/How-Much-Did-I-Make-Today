@@ -3,6 +3,7 @@ from datetime import date
 from math import e
 from os import write
 from re import I
+from ssl import HAS_SNI
 from wsgiref import validate
 import os
 import json
@@ -36,7 +37,7 @@ def init():
     # print(getDate)
 
     validAmount = False
-   
+    
     while validAmount == False:
         try:
             amount = float(input("\nWhat's goood, me!! How much did we make today?? (" + getDate + ") >>  "))
@@ -90,10 +91,25 @@ def updateIndex(date, amount, where):
     
     writeToFile(index[date]["date"], index[date]["amount"], index[date]["where"])
 
-    
-    init()
+    runAgain()
+    #init()
     
         
+def runAgain():
+    print("\n\nDo you want to make another entry? (ENTER=yes, ESC=exit)")
+    hasAnswered = False
+    while hasAnswered == False:
+        if keyboard.read_key() == 'enter':
+            print("\n\n\t***Running again...")
+            hasAnswered = True
+            init()
+            break
+        elif keyboard.is_pressed('esc'):
+            print("\n\n\t***Exiting...Later, scruuuub!!\n")
+            hasAnswered = True
+            exit()
+            break
+
 
 def writeToFile(date, amount, where):
     total = getTotal(amount)
